@@ -14,7 +14,7 @@ public class Delivery {
     @Column(name = "delivery_id")
     private String id;
 
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;
 
     @Embedded //@Embeddable한 address를 쓰는 것

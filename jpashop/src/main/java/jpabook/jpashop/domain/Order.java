@@ -16,16 +16,18 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne //Order과 Member은 다대 일 관계
+    @ManyToOne(fetch = FetchType.LAZY)//Order과 Member은 다대 일 관계
     //fk : 주문한 회원에 대한 매핑
     //연관관계의 주인이 되는 쪽 = 값을 변경하는 쪽
+    //연관된 쿼리는 함께 fetch하지 않음
     @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToMany(mappedBy = "order") //OrderItem의 order에 의한 매핑(조회용)
+    //기본이 LAZY
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery; //마찬가지로 fk
 
