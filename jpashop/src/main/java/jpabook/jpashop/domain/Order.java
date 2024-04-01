@@ -23,11 +23,17 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "order") //OrderItem의 order에 의한 매핑(조회용)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //OrderItem의 order에 의한 매핑(조회용)
     //기본이 LAZY
     private List<OrderItem> orderItems = new ArrayList<>();
+    //entity의 기본 persist는 각자 이루어짐
+    //persist(orderItemA)
+    //persist(orderItemB)
+    //.. persist(order)을
+    //함께 해주고, delete 시에도 함께 지워줌
 
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery; //마찬가지로 fk
 
@@ -35,6 +41,42 @@ public class Order {
     private LocalDateTime orderDate; //주문시간
     //hibernate의 지원에 따라 Date date 선언 생략
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus status; //주문상태 : order, cancel
+
+    //연관관계 편의 메서드 : 양방향인 경우의 세팅
+    public void setMember(Member member){
+        this.member = member;
+        member.getOrders().add(this);
+    }
+
+    public void addOrderItem(OrderItem orderItem){
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery){
+        this.delivery = delivery;
+        delivery.setOrder(this);
+
+    }
+    public static void main(String[] args){
+        Member member = new Member();
+        Order order = new Order();
+
+        order.setMember(member);
+    }
+    /*
+    public void setMember(Member member){
+        this.member = member;
+    }
+    public static void main(String[] args){
+        Member member = new Member();
+        Order order = new Order();
+        member.getOrders().add(order);
+        order.setMmeber(member);
+    }
+
+     */
 
 }
