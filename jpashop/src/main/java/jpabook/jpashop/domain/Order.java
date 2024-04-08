@@ -1,16 +1,18 @@
 package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 @Entity
 @Table(name = "orders") //없으면 관례로 Order이 되어버림
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Order {
     @Id @GeneratedValue
     @Column(name = "order_id")
