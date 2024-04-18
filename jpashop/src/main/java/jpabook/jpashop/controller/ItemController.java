@@ -54,11 +54,11 @@ public class ItemController {
     public String updateItemForm(@PathVariable("itemId") Long itemId, Model model){
         Book item = (Book) itemService.findOne(itemId); //바꾸고자 하는 상품을 찾음
 
-        BookForm form = new BookForm(); 
+        BookForm form = new BookForm();
 
-        form.setName(item.getName()); //찾은 상품의 이름을 찾아 BookForm으로 설정
+        form.setName(item.getName()); //html form에 불러올 상품의 이름을 찾아 BookForm으로 설정
         form.setAuthor(item.getAuthor());
-        form.setId(item.getId());
+        form.setId(item.getId()); //item에 대해 user이 권한을 가지는지에 대한 checking 필요
         form.setName(item.getName());
         form.setIsbn(item.getIsbn());
         form.setPrice(item.getPrice());
@@ -68,7 +68,7 @@ public class ItemController {
     }
 
     //item edit : store by itemService
-    @PostMapping(value = "/items/{itemId}/edit")
+    @PostMapping(value = "/items/{itemId}/edit") //html form에 입력된 값을 저장
     public String updateItem(@ModelAttribute("form") BookForm form){
         Book book = new Book();
         book.setId(form.getId());
