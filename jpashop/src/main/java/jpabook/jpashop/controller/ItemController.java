@@ -68,7 +68,15 @@ public class ItemController {
     }
 
     //item edit : store by itemService
+
     @PostMapping(value = "/items/{itemId}/edit") //html form에 입력된 값을 저장
+    public String updateItem(@PathVariable Long itemId, @ModelAttribute("form") BookForm form){
+        itemService.updateItem(itemId, form.getName(), form.getPrice(),
+                form.getStockQuantity());
+        return "redirect:/items";
+    }
+
+    /*
     public String updateItem(@ModelAttribute("form") BookForm form){
         Book book = new Book();
         book.setId(form.getId());
@@ -81,5 +89,5 @@ public class ItemController {
         itemService.saveItem(book);
         return "redirect:/items";
     }
-
+    */
 }
