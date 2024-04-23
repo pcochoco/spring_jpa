@@ -3,7 +3,8 @@ package jpabook.jpashop.domain.service;
 import jakarta.persistence.EntityManager;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.repository.MemberRepository;
-import org.junit.jupiter.api.Test;
+import org.junit.Test; //junit4
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
