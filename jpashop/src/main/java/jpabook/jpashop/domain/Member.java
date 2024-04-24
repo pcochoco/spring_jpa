@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,10 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    //@NotEmpty //api data 보낼 때를 위한 용도
+    //depends on whether api needs the annotation or not
+    //entity를 통해 api 스펙이 변경될 수 있는 문제점
+    //DTO for api needed
     private String name;
 
     @Embedded
