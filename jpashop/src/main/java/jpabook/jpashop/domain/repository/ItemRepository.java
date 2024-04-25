@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jpabook.jpashop.domain.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,7 +13,6 @@ import java.util.List;
 public class ItemRepository {
 
     private final EntityManager em;
-
     public void save(Item item){
         if (item.getId() == null) {
             em.persist(item); //item id 없는 경우 새로운 객체 생성한 것
@@ -26,9 +26,11 @@ public class ItemRepository {
     }
 
     public List<Item> findAll(){
-        return em.createQuery("select i form Item i", Item.class)
+        return em.createQuery("select i from Item i", Item.class)
                 .getResultList();
     }
+
+
 
 
 

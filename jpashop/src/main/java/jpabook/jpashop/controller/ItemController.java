@@ -51,19 +51,19 @@ public class ItemController {
     //itemId로 item을 찾고 form에 item의 정보 저장
 
     @GetMapping(value = "/items/{itemId}/edit")
-    public String updateItemForm(@PathVariable("itemId") Long itemId, Model model){
+    public String updateItemForm(@PathVariable(name = "itemId") Long itemId, Model model){
         Book item = (Book) itemService.findOne(itemId); //바꾸고자 하는 상품을 찾음
 
         BookForm form = new BookForm();
 
+        form.setId(item.getId()); //item에 대해 user이 권한을 가지는지에 대한 checking 필요
         form.setName(item.getName()); //html form에 불러올 상품의 이름을 찾아 BookForm으로 설정
         form.setAuthor(item.getAuthor());
-        form.setId(item.getId()); //item에 대해 user이 권한을 가지는지에 대한 checking 필요
-        form.setName(item.getName());
         form.setIsbn(item.getIsbn());
         form.setPrice(item.getPrice());
         form.setStockQuantity(item.getStockQuantity());
 
+        model.addAttribute("form", form);
         return "items/updateItemForm";
     }
 
