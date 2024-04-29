@@ -8,13 +8,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
-@RequiredArgsConstructor
+//api 활용을 위한 data setting
+@Component //spring container에 등록 후 component scan
+@RequiredArgsConstructor //final, non null 변수에 대한 생성자 주입
 public class initDB {
     private final InitService initService;
 
     @PostConstruct
-    public void init(){
+    public void init(){ //spring life cycle 때문에 모든 코드를 이 안으로 적을 수는 없음
         initService.dbInit1();
         initService.dbInit2();
     }
@@ -26,6 +27,7 @@ public class initDB {
         private final EntityManager em;
 
         public void dbInit1(){
+            //기능의 중복에 따라 em 활용, 객체 create 함수로 분리 git
             Member member = createMember("userA","seoul","1","1111");
             em.persist(member);
 
