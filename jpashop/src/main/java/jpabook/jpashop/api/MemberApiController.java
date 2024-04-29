@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 //package의 분리 - template engine과 api용
 //공통 예외 처리와 같은 부분에 대한 차이점
 //app을 만드는 경우 api 통신을 위한 컨트롤러
@@ -15,6 +18,40 @@ import org.springframework.web.bind.annotation.*;
 @RestController @RequiredArgsConstructor
 public class MemberApiController {
     private final MemberService memberService;
+
+    //Member 조회 api
+    //entity를 직접 노출하게 되면 entity 자체 정보 또한 외부로 공유되는 문제점
+    //entity에서 무시할 정보를 @JsonIgnore로 빼줄 수 있음
+    //PostMapping 함수와 마찬가지로 api와 entity의 분리 필요 문제 발생
+    //array 형태로 반환 -> 다른 추가 정보를 넣고자 할 시 json 형식 파괴해야함 : 유연성 개선 필요
+    @GetMapping("/api/v1/members")
+    public List<Member> membersV1(){
+        return memberService.findMembers();
+    }
+
+    //data 배열 안의 값
+    //entity 직접 노출 없이 api 스펙에 맞는 dto를 만들어 사용할 것
+    @GetMapping("/api/v2/members")
+    public Result memberV2(){
+        List<Member> findMembers = memberService.findMembers();
+        List<MemberDto> collect = findMembers.stream()
+                .map(m -> new MemberDto(m.getName()))
+                .collect(Collectors.toList());
+        return new Result(collect.size(), collect); //data 개수, data 함께 반환 가능
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T>{
+        private int count;
+        private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class MemberDto{
+        private String name;
+    }
 
     //회원 등록하는 api
     @PostMapping("/api/v1/members")
@@ -46,7 +83,7 @@ public class MemberApiController {
 
     //Member 값 수정용 -> put 활용
     //postman put send -> updateMemberV2 -> update : entity 변경, transaction 끝나고 commit되는 시점에서 jpa의 변경감지 실행
-    //update 완료 후 transaction 끝남 -> 정상 작동 이후의 쿼리를 가져와 response로 담음 
+    //update 완료 후 transaction 끝남 -> 정상 작동 이후의 쿼리를 가져와 response로 담음
     @PutMapping("/api/v2/members/{id}")
     public UpdateMemberResponse updateMemberV2(
             @PathVariable("id") Long id,

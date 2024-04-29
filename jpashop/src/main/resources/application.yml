@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none #db를 drop하지 않음
     properties:
       hibernate:
         # show_sql: true #띄어쓰기 8칸
