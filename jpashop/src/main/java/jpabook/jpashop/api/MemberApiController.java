@@ -3,11 +3,10 @@ package jpabook.jpashop.api;
 import jakarta.validation.Valid;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.service.MemberService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 //package의 분리 - template engine과 api용
 //공통 예외 처리와 같은 부분에 대한 차이점
@@ -37,12 +36,38 @@ public class MemberApiController {
     @PostMapping("/api/v2/members")
     public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request){
         //데이터 전송을 위한 별도의 객체 활용 : DTO 생성
-        
+
         Member member = new Member();
         member.setName(request.getName());
 
         Long id = memberService.join(member);
         return new CreateMemberResponse(id);
+    }
+
+    //Member 값 수정용 -> put 활용
+    //postman put send -> updateMemberV2 -> update : entity 변경, transaction 끝나고 commit되는 시점에서 jpa의 변경감지 실행
+    //update 완료 후 transaction 끝남 -> 정상 작동 이후의 쿼리를 가져와 response로 담음 
+    @PutMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberV2(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid UpdateMemberRequest request){
+
+        memberService.update(id, request.getName());
+        Member findMember = memberService.findOne(id);
+        return new UpdateMemberResponse(findMember.getId(), findMember.getName());
+    }
+
+    @Data
+    static class UpdateMemberRequest{
+        String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    //바깥에서 따로 쓸 클래스는 아니기 때문에 controller 안에서 만들어줌
+    static class UpdateMemberResponse{
+        Long id;
+        String name;
     }
 
     @Data
@@ -58,8 +83,4 @@ public class MemberApiController {
             this.id = id;
         }
     }
-
-
-
-
 }

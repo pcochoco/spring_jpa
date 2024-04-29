@@ -53,4 +53,11 @@ public class MemberService {
         return memberRepository.findOne(memberId);
     }
 
+    @Transactional
+    //이 함수에서 Member을 return하게 되면 쿼리와 업데이트를 분리하지 않게 됨
+    //엔티티를 바꾸는 기능 + 조회 기능을 함께 가지게 됨
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
+    }
 }
