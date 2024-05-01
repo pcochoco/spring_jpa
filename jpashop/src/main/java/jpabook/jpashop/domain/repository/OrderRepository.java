@@ -45,7 +45,7 @@ public class OrderRepository {
 
      */
 
-    /*
+
     //주문 검색 : jpql 활용
     public List<Order> findAllByString(OrderSearch orderSearch) {
       //language=JPAQL
@@ -81,7 +81,6 @@ public class OrderRepository {
         }
         return query.getResultList();
    }
-   */
 
     //주문 검색 : JPA criteria 이용
     public List<Order> findAllByCriteria(OrderSearch orderSearch) {
