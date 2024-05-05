@@ -79,6 +79,8 @@ public class OrderSimpleApiController {
     }
 
     //엔티티를 dto로 변환 + fetch join 활용
+    //order -> member, order -> delivery는 이미 조회된 상태이므로 지연로딩 x
+    //query 1번 호출 
     @GetMapping("/api/v3/simple-orders")
     public List<SimpleOrderDto> ordersV3(){
         List<Order> orders = orderRepository.findAllWithMemberDelivery();
