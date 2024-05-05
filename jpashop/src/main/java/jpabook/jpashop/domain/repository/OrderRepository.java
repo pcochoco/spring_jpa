@@ -106,4 +106,16 @@ public class OrderRepository {
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000); //최대 1000건
         return query.getResultList();
     }
+
+    //entity를 dto로 변환할 때 fetch join을 쓰는 용도
+    //entity fetch join -> query 1번에 조회
+    //fetch join으로 order -> member, order -> delivery는 이미 조회된 상태로 지연로딩 x 
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o" +
+                        "join fetch o.member m" +
+                        "join fetch o.delivery d", Order.class)
+                .getResultList();
+
+    }
 }
