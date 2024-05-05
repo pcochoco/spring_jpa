@@ -16,6 +16,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 //주문, 배송정보, 회원 조회
+//지연로딩과 관련한 조회 성능 최적화
 @RestController
 @RequiredArgsConstructor
 public class OrderSimpleApiController {
@@ -33,7 +34,7 @@ public class OrderSimpleApiController {
     //hibernate이 proxy 활용 (가짜 객체를 넣어놓고 객체에 실제로 손을 댈때 db에 쿼리를 날려 값을 가져옴)
 
     //직접 엔티티를 활용하는 조회
-    @GetMapping("/api/v1/simple-orders")//사용하지 말 것 
+    @GetMapping("/api/v1/simple-orders")//사용하지 말 것
     public List<Order> ordersV1(){
         List<Order> all = orderRepository.findAllByString(new OrderSearch());
         for(Order order : all){
@@ -47,6 +48,9 @@ public class OrderSimpleApiController {
     //직접 엔티티를 조회하지 않는 방법 : dto를 둠
     //orderRepostiory에서 가져온 list -> SimpleOrderDto의 list로 옮겨주어
     //map으로 개별적인 원소들을 불러와 출력
+
+    //N + 1의 성능 문제 (조회 수가 많아질 수록 쿼리 수도 많아짐)
+    //N : Member, N : Delivery, 1 : Order
     @GetMapping("/api/v2/simple-orders")
     public List<SimpleOrderDto> ordersV2(){
         List<Order> orders = orderRepository.findAllByString(new OrderSearch());
@@ -65,7 +69,7 @@ public class OrderSimpleApiController {
         private OrderStatus orderStatus;
         private Address address;
 
-        public SimpleOrderDto(Order order) { //dto에서는 entity를 받아도 됨
+        public SimpleOrderDto(Order order) { //dto에서는 entity를 받아도 됨(상대적으로 덜 중요한 부분)
             orderId = order.getId();
             name = order.getMember().getName(); //LAZY 초기화
             orderDate = order.getOrderDate();
@@ -73,6 +77,9 @@ public class OrderSimpleApiController {
             address = order.getDelivery().getAddress();
         }
     }
+
+    //엔티티를 dto로 변환 + fetch join 활용
+
 
 
 }
