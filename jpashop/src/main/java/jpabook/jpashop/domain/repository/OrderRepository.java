@@ -118,4 +118,28 @@ public class OrderRepository {
                 .getResultList();
 
     }
+
+    //V3 method을 위한 함수 -> fetch join으로 sql 1번 실행
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o" + //distinct : 1대다 조인에서 중복 걸러짐
+                        "join fetch o.member m" +
+                        "join fetch o.delivery d" +
+                        "join fetch o.orderItems oi" +
+                        "join fetch oi.item i", Order.class)
+                .getResultList();
+    }
+
+    /*
+    //paging을 시도하는 경우의 code
+    public List<Order> findAllWithMemberDelivery(int offset, int limit){
+        return em.createQuery(
+            "select o from Order o" +
+                "join fetch o.member m" +
+                "join fetch o.delivery d", Order.class)
+            .setFirstResult(offset)
+            .setMaxResults(limit)
+            .getResult(list();
+    }
+     */
 }
