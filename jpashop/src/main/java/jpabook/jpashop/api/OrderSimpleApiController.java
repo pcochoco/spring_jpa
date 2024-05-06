@@ -17,6 +17,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+//ToOne의 관계
 //주문, 배송정보, 회원 조회
 //지연로딩과 관련한 조회 성능 최적화
 @RestController
