@@ -93,7 +93,8 @@ public class OrderSimpleApiController {
     }
 
     //jpa에서 dto로 바로 조회
-    //전용 repository와 dto 새로 만들어 줌
+    //전용 repository와 dto 새로 만들어 줌 (유연성은 떨어짐, API 스펙에 맞춘 코드)
+    //JPQL의 결과를 DTO로 즉시 변환
     private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     @GetMapping("/api/v4/simple-orders")
@@ -101,6 +102,12 @@ public class OrderSimpleApiController {
         return orderSimpleQueryRepository.findOrderDtos();
     }
 
+    /* 퀄 방식 선택의 권장 순서
+    1. 엔티티를 DTO로 변환
+    2. 필요시 페치 조인
+    3. DTO 직접 조회 (V4)
+    4. JPA가 제공하는 네이티브 SQL이나 스프링 JDBC 사용
+     */
 
 
 
