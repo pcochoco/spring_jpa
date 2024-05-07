@@ -120,6 +120,7 @@ public class OrderRepository {
     }
 
     //V3 method을 위한 함수 -> fetch join으로 sql 1번 실행
+    //paging 불가능
     public List<Order> findAllWithItem() {
         return em.createQuery(
                 "select distinct o from Order o" + //distinct : 1대다 조인에서 중복 걸러짐
@@ -130,7 +131,7 @@ public class OrderRepository {
                 .getResultList();
     }
 
-    /*
+
     //paging을 시도하는 경우의 code
     public List<Order> findAllWithMemberDelivery(int offset, int limit){
         return em.createQuery(
@@ -139,7 +140,7 @@ public class OrderRepository {
                 "join fetch o.delivery d", Order.class)
             .setFirstResult(offset)
             .setMaxResults(limit)
-            .getResult(list();
+            .getResultList();
     }
-     */
+
 }

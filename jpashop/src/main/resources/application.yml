@@ -10,6 +10,7 @@ spring:
     properties:
       hibernate:
         # show_sql: true #띄어쓰기 8칸
+        default_batch_fetch_size: 100 #db에 따른 parameter 제한
         format_sql: true
 logging.level:
   org.hibernate.SQL: debug
