@@ -5,11 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class OrderQueryRepository {
     private final EntityManager em;
+    //V4 method에서 사용
     public List<OrderQueryDto> findOrderQueryDtos(){
         //ToOne 코드 모두 한번에 조회
         List<OrderQueryDto> result = findOrders();
@@ -43,5 +45,14 @@ public class OrderQueryRepository {
                 .getResultList();
     }
 
+    //V5 method에서 사용
+    public List<OrderQueryDto> findAllByDto_optimization() {
+        List<OrderQueryDto> result = findOrders();
 
+        Map<Long, List<OrderItemQueryDto>> orderItemMap = findOrderItemMap(toOrderIds(result));
+
+        result.forEach(o -> o.setOrderItems(orderItemMap.get(o.getOrderId())));
+
+        return result;
+    }
 }
