@@ -32,7 +32,7 @@ public class OrderQueryRepository {
                 .getResultList();
     }
 
-    //1 : N 관계 조회 = ToMany 관계 -> join하면 row 수 증가 
+    //1 : N 관계 조회 = ToMany 관계 -> join하면 row 수 증가
     private List<OrderItemQueryDto> findOrderItems(Long orderId){
         return em.createQuery(
                 "select new jpabook.jpashop.repository.order.query.OrderQueryDto(o.id, m.name, o.orderDate, o.status, d.address" +

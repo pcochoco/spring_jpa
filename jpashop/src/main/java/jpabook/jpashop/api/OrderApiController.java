@@ -131,5 +131,11 @@ public class OrderApiController {
 
     }
 
+    //jpa dto 직접 조회
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5(){
+        return orderQueryRepository.findAllByDto_optimization();
+    }
+
 
 }
