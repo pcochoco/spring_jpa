@@ -131,7 +131,7 @@ public class OrderApiController {
 
     }
 
-    //jpa dto 직접 조회
+    //jpa dto 직접 조회 : 쿼리 2번 호출
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5(){
         return orderQueryRepository.findAllByDto_optimization();
