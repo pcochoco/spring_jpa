@@ -46,13 +46,16 @@ public class OrderQueryRepository {
                 .getResultList();
     }
 
-    //V5 method에서 사용
+    //V5 method에서 사용 -> map 사용 성능 향상 O(1)
     public List<OrderQueryDto> findAllByDto_optimization() {
-        List<OrderQueryDto> result = findOrders(); //ToOne 관계 한번에 조회
+        List<OrderQueryDto> result = findOrders(); //ToOne 관계는 한번에 조회
 
+        //orderItem collection을 map 한방에 조회
         Map<Long, List<OrderItemQueryDto>> orderItemMap = findOrderItemMap(toOrderIds(result));
 
+        //루프를 돌면서 collection 추가
         result.forEach(o -> o.setOrderItems(orderItemMap.get(o.getOrderId())));
+        //findOrders로 order을 찾은 것처럼 result에 orderItem의 정보도 넣는 것 
 
         return result;
     }
@@ -62,7 +65,7 @@ public class OrderQueryRepository {
                 "select new jpabook.jpashop.repository.order.query.OrderItemQueryDto(oi.order.id, i.name, oi.orderPrice, oi.count" +
                         "from OrderItem oi" +
                         "join oi.item i" +
-                        "where oi.order.id in orderIds", OrderItemQueryDto.class)
+                        "where oi.order.id in orderIds", OrderItemQueryDto.class) //in query 사용
                 .setParameter("orderIds",orderIds)
                 .getResultList();
         return orderItems.stream()
