@@ -138,4 +138,8 @@ public class OrderApiController {
     }
 
 
+    @GetMapping("/api/v6/orders")
+    public List<OrderQueryDto> ordersV6(){
+
+    }
 }
