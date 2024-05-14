@@ -55,7 +55,7 @@ public class OrderQueryRepository {
 
         //루프를 돌면서 collection 추가
         result.forEach(o -> o.setOrderItems(orderItemMap.get(o.getOrderId())));
-        //findOrders로 order을 찾은 것처럼 result에 orderItem의 정보도 넣는 것 
+        //findOrders로 order을 찾은 것처럼 result에 orderItem의 정보도 넣는 것
 
         return result;
     }

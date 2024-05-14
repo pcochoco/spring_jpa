@@ -131,16 +131,19 @@ public class OrderApiController {
 
     }
 
-    //jpa dto 직접 조회 : 쿼리 2번 호출 => id로 orderItem 찾음
+    //jpa dto 직접 조회 : 쿼리 2번 호출 => id로 orderItem 한꺼번에 join
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5(){
         return orderQueryRepository.findAllByDto_optimization();
     }
 
 
-    //jpa dto 플랫 데이터 최적화
+    //jpa dto 플랫 데이터 최적화 : 쿼리 1번
     @GetMapping("/api/v6/orders")
     public List<OrderQueryDto> ordersV6(){
+        List<OrderQueryDto> flats = orderQueryRepository.findAllByDto_flat();
+        return flats.stream()
+                .collect()
 
     }
 }
