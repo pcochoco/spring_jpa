@@ -70,3 +70,15 @@ Item에서 stock에 대한 관리 기능
   - 모든 속성 변경 (지정해주지 않으면 null 값이 등록될 수 있다)
   - 준영속 엔티티를 영속 엔티티로
   - 1차 캐시에서 엔티티를 찾고 없으면 db에서 찾은 뒤 그 영속 엔티티에 준영속 엔티티의 값을 넣어준 후 1차 캐시에 저장 
+
+
+## API 개발
+- Entity를 직접 파라미터로 가져와 반환 x
+- DTO를 두어 값을 담고 반환
+- sample data : Service의 method으로 주문 관리, Member 등 생성 method 둠
+- 데이터 조회 시
+  - 엔티티 직접 노출 : EAGER 인 경우 LAZY로 fetch type -> jackson 인식 x -> hibernate 활용 강제 지연 로딩 
+  - dto로 변환 : 1 + N + N 번 조회 (지연 로딩 두번, 영속성 컨텍스트에서 조회 -> 이미 조회한 경우를 생략)
+  - dto + fetch join의 최적화
+  - jpa에서 dto 조회 : 리파지토리 재사용성 감소
+  => dto 변환 -> fetch join -> dto 직접 조회 -> sql 사용 순
