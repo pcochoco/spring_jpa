@@ -77,8 +77,16 @@ Item에서 stock에 대한 관리 기능
 - DTO를 두어 값을 담고 반환
 - sample data : Service의 method으로 주문 관리, Member 등 생성 method 둠
 - 데이터 조회 시
-  - 엔티티 직접 노출 : EAGER 인 경우 LAZY로 fetch type -> jackson 인식 x -> hibernate 활용 강제 지연 로딩 
+  - 엔티티 직접 노출 : api와 분리되지 않는 문제 
   - dto로 변환 : 1 + N + N 번 조회 (지연 로딩 두번, 영속성 컨텍스트에서 조회 -> 이미 조회한 경우를 생략)
-  - dto + fetch join의 최적화
-  - jpa에서 dto 조회 : 리파지토리 재사용성 감소
-  => dto 변환 -> fetch join -> dto 직접 조회 -> sql 사용 순
+  - fetch join
+  - jpa dto 조회
+  => dto로 변환 > fetch join > jpa > sql 순 활용
+- collection 조회 시
+   - 엔티티 직접 노출 : EAGER -> LAZY -> jackson 인식 x -> hibernate 활용 강제 지연 로딩
+   - dto로 변환 : 1 + N의 문제 (ToMany, ToOne 조회 시)
+   - dto + fetch join : paging 불가 (collection의 경우 불가, collection paging은 1개 가능)
+   - paging 최적화 : ToOne fetch join + hibernate.default_batch_fetch_size , @BatchSize
+   - dto jpa 직접 조회 : ToOne join -> ToMany(join시 row 증가) 따로 추가
+   - dto jpa 직접 조회의 최적화 : ToMany는 Map으로
+   - 
