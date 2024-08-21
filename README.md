@@ -90,3 +90,22 @@ Item에서 stock에 대한 관리 기능
    - dto jpa 직접 조회 : ToOne join -> ToMany(join시 row 증가) 따로 추가
    - dto jpa 직접 조회의 최적화 : ToMany는 Map, Id로 조회 
    - 플랫 데이터 : 중복 데이터, 페이징 불가 
+
+## OSIV = open session in view 
+- filter interceptor, view, controller : 영속 상태, 수정 불가
+- service, repository : 영속 상태, 수정 가능
+- db connection start ~ api request end 까지 persistence context 유지
+- view, api 지연 로딩 가능
+- db connection resource 많이 사용 -> 실시간 connection에서 자원 모자름
+- osiv off : transaction 종료, db 연결 끊음, persistence context 유지 x, connection resource 낭비 x
+
+
+   모든 지연로딩을 transaction 안으로 넣어야함
+
+  - command, query 분리를 통한 관리
+     비즈니스 로직(수정), 화면 출력 쿼리(복잡)은 서로 관련이 적음
+
+
+    둘을 분리해 Service 층에서 따로 관리 (둘다 transaction, 지연로딩 가능)
+    
+  
