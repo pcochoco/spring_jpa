@@ -88,5 +88,5 @@ Item에서 stock에 대한 관리 기능
    - dto + fetch join : paging 불가 (collection의 경우 불가, collection paging은 1개 가능)
    - paging 최적화 : ToOne fetch join + hibernate.default_batch_fetch_size , @BatchSize
    - dto jpa 직접 조회 : ToOne join -> ToMany(join시 row 증가) 따로 추가
-   - dto jpa 직접 조회의 최적화 : ToMany는 Map으로
-   - 
+   - dto jpa 직접 조회의 최적화 : ToMany는 Map, Id로 조회 
+   - 플랫 데이터 : 중복 데이터, 페이징 불가 
