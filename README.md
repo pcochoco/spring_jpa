@@ -32,10 +32,10 @@ Member별로 Item의 stock에 따른 Order
 - 물리명 : 모든 논리명에 적용, 실제 테이블에 적용
 
 
-## Repository
+## [Repository](jpashop/src/main/java/jpabook/jpashop/domain/repository/ItemRepository.java)
 - @Repository : spring bean 등록 
 - @PersistenceContext(-> @RequiredArgsConstructor) : entity manager 주입 
-## Service 
+## [Service](jpashop/src/main/java/jpabook/jpashop/domain/service/ItemService.java) 
 - @Transactional : PersistenceContext
 - @Autowired(-> @RequiredArgsConstructor) : repository 주입
  
@@ -55,7 +55,7 @@ Item에서 stock에 대한 관리 기능
 - 주문 검색 : jpql, criteria, queryDSL
 
 ## Web 
-- Controller : Model에 객체를 담아 View로 전달(@GetMapping, @PostMapping)
+- [Controller](jpashop/src/main/java/jpabook/jpashop/controller/HomeController.java) : Model에 객체를 담아 View로 전달(@GetMapping, @PostMapping)
 - html form의 값을 Form class 객체에 담아 BindingResult로 검사후 저장
 - @PathVariable
 - @ModelAttribute
