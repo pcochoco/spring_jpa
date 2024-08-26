@@ -20,8 +20,8 @@ Member별로 Item의 stock에 따른 Order
 
 
 ## 상속관계
-- @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-- @DiscriminatorColumn(name = "dtype") - @DiscriminatorValue("example")
+- [@Inheritance(strategy = InheritanceType.SINGLE_TABLE)](jpashop/src/main/java/jpabook/jpashop/domain/Item.java)
+- @DiscriminatorColumn(name = "dtype") - [@DiscriminatorValue("example")](jpashop/src/main/java/jpabook/jpashop/domain/item/Album.java)
 
 ## entity 설계 시 주의점 
 - Getter o, Setter x : 변경되지 않도록
@@ -50,8 +50,8 @@ Member별로 Item의 stock에 따른 Order
 Item에서 stock에 대한 관리 기능
 
 ## Order 
-- Order : order 생성, stock에 따른 취소, 전체 주문 가격 조회 
-- OrderItem : 주문 대상이 되는 item 생성, 취소, 가격 조회
+- [Order](jpashop/src/main/java/jpabook/jpashop/domain/Order.java) : order 생성, stock에 따른 취소, 전체 주문 가격 조회 
+- [OrderItem](jpashop/src/main/java/jpabook/jpashop/domain/OrderItem.java) : 주문 대상이 되는 item 생성, 취소, 가격 조회
 - 주문 검색 : jpql, criteria, queryDSL
 
 ## Web 
@@ -76,13 +76,13 @@ Item에서 stock에 대한 관리 기능
 - Entity를 직접 파라미터로 가져와 반환 x
 - DTO를 두어 값을 담고 반환
 - sample data : Service의 method으로 주문 관리, Member 등 생성 method 둠
-- 데이터 조회 시
+- [데이터 조회 시](jpashop/src/main/java/jpabook/jpashop/api/MemberApiController.java)
   - 엔티티 직접 노출 : api와 분리되지 않는 문제 
   - dto로 변환 : 1 + N + N 번 조회 (지연 로딩 두번, 영속성 컨텍스트에서 조회 -> 이미 조회한 경우를 생략)
   - fetch join
   - jpa dto 조회
   => dto로 변환 > fetch join > jpa > sql 순 활용
-- collection 조회 시
+- [collection 조회 시](jpashop/src/main/java/jpabook/jpashop/api/OrderApiController.java)
    - 엔티티 직접 노출 : EAGER -> LAZY -> jackson 인식 x -> hibernate 활용 강제 지연 로딩
    - dto로 변환 : 1 + N의 문제 (ToMany, ToOne 조회 시)
    - dto + fetch join : paging 불가 (collection의 경우 불가, collection paging은 1개 가능)
